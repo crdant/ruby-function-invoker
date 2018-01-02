@@ -1,6 +1,7 @@
 = Running Ruby Functions in RIFF
 
-An invoker for https://projectriff.io[RIFF] to make it run Ruby functions.
+An invoker for https://projectriff.io[RIFF] to make it run Ruby functions. Play with the
+link:samples/binary/binary.rb[samples] to get a feel for it.
 
 === Write your function
 
