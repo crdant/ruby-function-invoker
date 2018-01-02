@@ -1,0 +1,25 @@
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: text
+---
+
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: encoded
+spec:
+  partitions: 3
+
+---
+
+apiVersion: projectriff.io/v1
+kind: Function
+metadata:
+  name: base64
+spec:
+  protocol: http
+  input: text
+  output: encoded
+  container:
+    image: crdant/base64:0.0.2-snapshot
