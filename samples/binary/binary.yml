@@ -1,0 +1,25 @@
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: decimals
+---
+
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: binaries
+spec:
+  partitions: 3
+
+---
+
+apiVersion: projectriff.io/v1
+kind: Function
+metadata:
+  name: binary
+spec:
+  protocol: http
+  input: decimals
+  output: binaries
+  container:
+    image: crdant/binary:0.0.2-snapshot
