@@ -1,0 +1,2 @@
+An experiment in writing a function invoker for https://projectriff.io[RIFF] for Ruby functions. Played with
+it for a couple of hours and got a couple of functions to run.
