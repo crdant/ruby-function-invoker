@@ -5,7 +5,7 @@ An invoker for https://projectriff.io[RIFF] to make it run Ruby functions.
 === Write your function
 
 Your function should be in a Ruby source file that ends with an expression returning a `Proc` or
-a `lambda`. For example (from the sample link:samples/binary/binary.rb):
+a `lambda`. For example (from the link:samples/binary/binary.rb[samples]):
 
 ```
 require "base64"
