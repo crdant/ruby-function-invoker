@@ -1,3 +1,83 @@
-An experiment in writing an invoker so https://projectriff.io[RIFF] can run Ruby functions. Played with
-it for a couple of hours and got a couple of functions to run. I haven't written Ruby in a while, so I'm
-not sure how idiomatic it is.
+= Running Ruby Functions in RIFF
+
+An invoker for https://projectriff.io[RIFF] to make it run Ruby functions.
+
+=== Write your function
+
+Your function should be in a Ruby source file that ends with an expression returning a `Proc` or
+a `lambda`. For example (from the sample link:samples/binary/binary.rb):
+
+```
+require "base64"
+
+Proc.new { |text| Base64.encode64(text) }
+```
+
+=== Build a container
+
+Create a `Dockerfile` that puts your function code into the container and uses the function
+invoker as a base image. From the same sample:
+
+```
+FROM crdant/ruby-function-invoker:0.0.2-snapshot
+ENV FUNCTION_URI /functions/function.rb
+ADD base64.rb ${FUNCTION_URI}
+```
+
+Build your container image and push to your image repository
+
+```
+docker build <your source dir> -t <your docker id>/<your function name>:<your function version>
+docker push <your function name>:<your function version>
+```
+
+=== Deploy your function
+
+Create a file `<your function>.yaml" that describes your function to Kubernetes so you can
+deploy it. The deployment will need to specify the input topic, the output topic, and the
+function specification.
+
+To define the input topic, add
+
+```
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: <input topic name>
+```
+
+then the output topic
+
+```
+apiVersion: projectriff.io/v1
+kind: Topic
+metadata:
+  name: <output topic name>
+spec:
+  partitions: 3
+```
+
+and lastly the function
+
+```
+apiVersion: projectriff.io/v1
+kind: Function
+metadata:
+  name: <your function name>
+spec:
+  protocol: http
+  input: <input topic name>
+  output: <output topic name>
+  container:
+    image: <your function name>:<your function version>
+```
+
+currently the invoker only supports `protocol: http`, though there are other options with RIFF.
+
+Deploy with `kubectl apply -f <your function>.yaml`.
+
+=== Use RIFF to send and receive messages
+
+The link:https://github.com/projectriff/riff[RIFF repo] has a couple of convenient scripts for
+sending messages to your function and reading them back. Use the `publish` to send messages, and
+the `topics` script to read them.
