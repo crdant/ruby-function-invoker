@@ -1,2 +1,3 @@
-An experiment in writing a function invoker for https://projectriff.io[RIFF] for Ruby functions. Played with
-it for a couple of hours and got a couple of functions to run.
+An experiment in writing an invoker so https://projectriff.io[RIFF] can run Ruby functions. Played with
+it for a couple of hours and got a couple of functions to run. I haven't written Ruby in a while, so I'm
+not sure how idiomatic it is.
